@@ -22,6 +22,7 @@ pub trait DAO {
     // READ
     /// Get Client by Id
     fn get_client(&self, id: i32) -> Result<&Client, i32>;
+    fn get_all_clients(&self) -> &HashMap<i32, Client>;
     /// Get All accounts for a client
     fn get_accounts(&self, id: i32) -> Result<&HashMap<i32, Account>, i32>;
 

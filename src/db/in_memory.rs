@@ -36,6 +36,10 @@ impl super::DAO for Memory {
         }
     }
 
+    fn get_all_clients(&self) -> &HashMap<i32, Client> {
+        return &self.client_data;
+    }
+
     fn get_client(&self, id: i32) -> Result<&Client, i32> {
         match self.client_data.get(&id) {
             Some(client) => Ok(client),
