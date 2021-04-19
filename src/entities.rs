@@ -1,10 +1,12 @@
-#[derive(Clone)]
+use serde::{Serialize, Deserialize};
+
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Client {
     pub id: i32,
     pub username: String
 }
 
-#[derive(Hash, Eq, Clone)]
+#[derive(Hash, Eq, Clone, Serialize, Deserialize)]
 pub struct Account {
     pub id: i32,
     pub amount_in_cents: i32,

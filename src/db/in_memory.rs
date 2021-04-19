@@ -10,6 +10,18 @@ pub struct Memory {
     pub account_data: HashMap<i32, HashMap<i32, Account>>
 }
 
+impl Memory {
+    pub fn new() -> Self {
+        Self {
+            client_count: 0,
+            account_count: 0,
+            client_data: HashMap::new(),
+            account_data: HashMap::new()
+        }
+        
+    }
+}
+
 impl super::DAO for Memory {
     fn create_client(&mut self, client: Client) -> Client {
         let mut inner_client = client;

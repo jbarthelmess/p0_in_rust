@@ -1,12 +1,13 @@
-use actix_web::{get, Responder, HttpResponse};
-//use serde::{Serialize};
-//use crate::entities::{Account, Client};
-//db: &impl super::db::DAO
+use actix_web::{web, get, Responder, HttpResponse};
+use serde_json;
+//use crate::entities::{Client};
+use crate::db::DAO;
+
 #[get("/clients")]
-async fn get_clients() -> impl Responder {
-    //let clients = db.get_all_clients();
-    //let clients = serde_json(&clients);
-    HttpResponse::Ok().body("Hello World")
+async fn get_clients(data: web::Data<crate::AppData>) -> impl Responder {
+    let clients = data.db.get_all_clients();
+    let json = serde_json::to_string(&clients).unwrap();
+    HttpResponse::Ok().body(json)
 }
 
 #[cfg(test)]

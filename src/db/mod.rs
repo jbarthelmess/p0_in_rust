@@ -1,6 +1,6 @@
 use std::collections::{HashMap};
 use crate::entities::{Account, Client};
-mod in_memory;
+pub mod in_memory;
 
 #[allow(dead_code)]
 fn get_dao() -> impl DAO {
@@ -47,12 +47,7 @@ mod test {
     fn initialize() -> impl DAO{
         // change this to whatever object implements DAO traits
         // all these tests should pass
-        in_memory::Memory{
-            client_count: 0,
-            client_data: HashMap::new(),
-            account_count: 0,
-            account_data: HashMap::new()
-        }
+        in_memory::Memory::new()
     }
 
     #[test]
