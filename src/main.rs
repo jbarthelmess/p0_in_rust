@@ -26,6 +26,10 @@ async fn main() -> std::io::Result<()>{
         .service(controller::create_account)
         .service(controller::get_accounts)
         .service(controller::get_account)
+        .service(controller::delete_client)
+        .service(controller::delete_account)
+        .service(controller::update_client)
+        .service(controller::update_account)
     )
     .bind(config.server_addr.clone())?
     .run()
