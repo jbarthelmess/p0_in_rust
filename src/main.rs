@@ -1,16 +1,11 @@
 use actix_web::{HttpServer, App};
 use dotenv::dotenv;
-//use std::env;
 use tokio_postgres::NoTls;
 pub mod entities;
 mod db;
 mod controller;
 mod config;
 pub mod error;
-
-// pub struct AppData {
-//     db: db::in_memory::Memory
-// }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{

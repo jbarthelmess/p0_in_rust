@@ -1,5 +1,6 @@
 use actix_web::{web, post, get, delete, put,  HttpResponse};
 use crate::entities::{BankClient, Account};
+use serde::Deserialize;
 use deadpool_postgres::{Client, Pool};
 use crate::error::DBError;
 use crate::db;
@@ -35,10 +36,18 @@ async fn create_account(db_pool: web::Data<Pool>, web::Path((client_id,)): web::
     Ok(HttpResponse::Created().json(new_account))
 }
 
+#[derive(Deserialize)]
+struct Range {
+    amount_greater_than: Option<i32>,
+    amount_less_than: Option<i32>
+}
+
 #[get("/clients/{client_id}/accounts")]
-async fn get_accounts(db_pool: web::Data<Pool>, web::Path((client_id,)): web::Path<(i32,)>) -> Result<HttpResponse, DBError> {
+async fn get_accounts(db_pool: web::Data<Pool>, web::Path((client_id,)): web::Path<(i32,)>, range: web::Query<Range>) -> Result<HttpResponse, DBError> {
+    let top = if let Some(v) = range.amount_greater_than { v } else { 0 };
+    let bottom = if let Some(v) = range.amount_less_than { v } else { std::i32::MAX };
     let pg_client: Client = db_pool.get().await.map_err(DBError::PoolError)?;
-    let accounts = db::get_accounts(&pg_client, client_id).await?;
+    let accounts = db::get_accounts(&pg_client, client_id, bottom, top).await?;
     Ok(HttpResponse::Ok().json(accounts))
 }
 

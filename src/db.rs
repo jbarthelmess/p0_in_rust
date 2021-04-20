@@ -55,11 +55,11 @@ pub async fn create_account(client: &Client, account: Account) -> Result<Account
         .ok_or(DBError::NotFound)
 }
 
-pub async fn get_accounts(client: &Client, id: i32) -> Result<Vec<Account>, DBError> {
-    let stmt = "SELECT * FROM bank_account WHERE client_id = $1;";
+pub async fn get_accounts(client: &Client, id: i32, ceiling: i32, floor: i32) -> Result<Vec<Account>, DBError> {
+    let stmt = "SELECT * FROM bank_account WHERE client_id = $1 AND amount_in_cents > $2 AND amount_in_cents < $3;";
     let stmt = client.prepare(&stmt).await.unwrap();
     Ok(client
-        .query(&stmt, &[&id])
+        .query(&stmt, &[&id, &floor, &ceiling])
         .await?
         .iter()
         .map(|row| Account::from_row_ref(row).unwrap())
